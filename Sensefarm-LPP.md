@@ -54,18 +54,29 @@ All multi-byte values are Big-endian.
 
 
 ### Actuator Type (Downlink)
-Same format as uplink but sensors are replaced by actuators. All multi-byte values are Big-endian.
+The cube series adopted parts of the Elsys format. 
+Elsys has an online message generator
+https://www.elsys.se/en/downlink-generator/
 
-| Hex  | Name         | Size | Format           | Comment                   |
-| :---:| :---:        |:---: | :---:            | :---:                     |
-| 0x00 | Proprietary  |      |                  | Data following this byte uses proprietary format |
-| 0x01 | Interval     | 2    | Unsigned         | Report interval, minutes  |
-| 0x02 | PWM          | 1    | Unsigned         | PWM Signal                |
-| 0x03 | State        | 1    | Bitmask          | Each bit represents a on/off state of misc. |
-| 0x04 | Rotation     | 2    | Signed           | –32768 -> +32767, Use case: motor/servo |
-| 0x05 | Rotation ABS | 4    | Signed, Overflow | -2147483648 -> +2147483647, Use case: motor/servo |
-| 0x06 | Pulse        | 2    | Unsigned         | 0-65535 pulses, Difference |
-| 0x07 | Pulse ABS    | 4    | Unsigned, Overflow | 0-4294967295, Absolute  |
-| 0x08 | Level        | 2    | Unsigned         | 0 -> 65535                |
-| 0x09 | Misc.        | 4    | Signed, Float    |                           |
-| ...  | RFU          |      |                  | Reserved for future use   |
+There must be a headerbyte of 0x3E first.
+
+Then follows a byte with number of bytes following that byte. 
+
+Supported commands are:
+
+| Hex  | Name               | Size | Format              | Comment                   |
+| :---:| :---:              |:---: | :---:               | :---:                     |
+| 0x1F | Send Period        | 4    | Unsigned            | Seconds to sleep until next measurement |
+| 0xFE | Reboot             | 0    | -                   | Reboot the device. This forced the device to use new settings. Reboot command should always be last in the command list as it does an immeditate reboot when read. |
+
+Example message:
+```
+3E061F00000E10FE 
+
+0x3E = Header byte
+0x06 = 6 bytes will follow
+0x1F = Send period
+0x00000E10 = 3600 seconds to sleep
+0xFE = Reboot with new settings.
+
+```
