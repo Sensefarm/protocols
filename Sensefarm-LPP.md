@@ -1,4 +1,4 @@
-# Upling format from device to servers
+# Uplink format from device to servers
 
 ## Payload
 Allows for any number of sensors and combinations.
