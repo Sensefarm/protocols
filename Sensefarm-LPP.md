@@ -1,3 +1,5 @@
+# Upling format from device to servers
+
 ## Payload
 Allows for any number of sensors and combinations.
 
@@ -53,7 +55,7 @@ All multi-byte values are Big-endian.
 | ...  | RFU                |      |                     | Reserved for future use   |
 
 
-### Actuator Type (Downlink)
+# Downlink format from servers to device
 The cube series adopted parts of the Elsys format ( see https://www.elsys.se/en/wp-content/uploads/sites/3/2016/09/ELSYS_downlink_payload_v2-1.pdf ) 
 Elsys has an online message generator
 https://www.elsys.se/en/downlink-generator/ ( Be careful of putting in the correct numbers without spaces as it does not check for errors. The reboot command needs a number even though that command does not use parameters. )
