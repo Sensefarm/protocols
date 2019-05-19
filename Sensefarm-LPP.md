@@ -56,7 +56,7 @@ All multi-byte values are Big-endian.
 ### Actuator Type (Downlink)
 The cube series adopted parts of the Elsys format ( see https://www.elsys.se/en/wp-content/uploads/sites/3/2016/09/ELSYS_downlink_payload_v2-1.pdf ) 
 Elsys has an online message generator
-https://www.elsys.se/en/downlink-generator/
+https://www.elsys.se/en/downlink-generator/ ( Be careful of putting in the correct numbers without spaces as it does not check for errors. The reboot command needs a number even though that command does not use parameters. )
 
 There must be a headerbyte of 0x3E first.
 
@@ -69,7 +69,7 @@ Supported commands are:
 | 0x1F | Send Period        | 4    | Unsigned            | Seconds to sleep until next measurement |
 | 0xFE | Reboot             | 0    | -                   | Reboot the device. This forced the device to use new settings. Reboot command should always be last in the command list as it does an immeditate reboot when read. |
 
-* Do not send unsupported Elsys commands. They might work but partly but will void your warranty. Examples are AppSKey, NwkSKey and DevAddr *
+_Do not send unsupported Elsys commands. They might work but has not been tested fully and will void your warranty and might brick your device. Examples are AppSKey, NwkSKey and DevAddr. Contact Sensefarm if needed for additional support._
 
 Example message:
 ```
@@ -83,3 +83,4 @@ Example message:
 
 ```
 
+(C) Sensefarm 2019
