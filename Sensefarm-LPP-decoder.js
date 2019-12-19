@@ -141,7 +141,7 @@ function DecodePayload(byteArray) {
             break;
           case 0x15: 
             str = "### Soil_moisture-" + (byteArray[i] & 0x07).toString(10) + " ";
-            var bytes = byteToValue(4);
+            var bytes = byteToValue(2);
             str += bytes.toString(10);
             str += " kPa ";
             console.log ( str );
