@@ -107,7 +107,7 @@ Example message:
 
 Other intervals ( with typical use-case ):
 1 hour interval ( water temperature at baths ) 3E061F00000E10FE 
-8 timmar interval ( trees ) 3E061F00007080FE
+8 hour interval ( trees ) 3E061F00007080FE
 10 minutes ( research agricultural trials ) 3E061F00000258FE
 20 seconds ( lab use ) 3E061F00000014FE
 
