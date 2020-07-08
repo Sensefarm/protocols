@@ -105,6 +105,12 @@ Example message:
 0x00000E10 = 3600 seconds to sleep
 0xFE = Reboot with new settings.
 
+Other intervals ( with typical use-case ):
+1 hour interval ( water temperature at baths ) 3E061F00000E10FE 
+8 timmar interval ( trees ) 3E061F00007080FE
+10 minutes ( research agricultural trials ) 3E061F00000258FE
+20 seconds ( lab use ) 3E061F00000014FE
+
 ```
 
-(C) Sensefarm 2019
+(C) Sensefarm 2020
