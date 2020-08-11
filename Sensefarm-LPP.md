@@ -2,7 +2,7 @@ Sensefarms CUBE 02 series
 
 UPLINK messages ( Sensor -> LoraServer -> Application ) described below.
 
-DOWNLINK message format ( Application->LoraServer->Decvice), scroll down.
+DOWNLINK message format ( Application->LoraServer->Decvice), with [examples](#downlink-example-messages)
 
 _Please note that the uplink and downlink formats differs considerable, due to customer request at different times_
 
@@ -95,7 +95,7 @@ Supported commands are:
 
 _Do not send unsupported Elsys commands. They might work but has not been tested fully and will void your warranty and might brick your device. Examples are AppSKey, NwkSKey and DevAddr. Contact Sensefarm if needed for additional support._
 
-Example message:
+## Downlink example messages
 ```
 3E061F00000E10FE 
 
@@ -106,10 +106,13 @@ Example message:
 0xFE = Reboot with new settings.
 
 Other intervals ( with typical use-case ):
-1 hour interval ( water temperature at baths ) 3E061F00000E10FE 
-8 hour interval ( trees ) 3E061F00007080FE
-10 minutes ( research agricultural trials ) 3E061F00000258FE
-20 seconds ( lab use ) 3E061F00000014FE
+20 seconds ( lab use ), 3E061F00000014FE
+10 minutes ( research agricultural trials ), 3E061F00000258FE
+1 hour interval ( water temperature at baths ), 3E061F00000E10FE 
+2 hour interval, 3E061F00001C20FE
+3 hour interval, 3E061F00002A30FE
+4 hour interval, 3E061F00003840FE
+8 hour interval ( trees ), 3E061F00007080FE
 
 ```
 
