@@ -1,8 +1,13 @@
 Sensefarms CUBE 02 series 
 
-UPLINK messages ( Sensor -> LoraServer -> Application ) described below.
+# Table of Contents
+1. [Uplink format](#uplink-format-from-device-to-servers)
+2. [Downlink format](#downlink-format-from-servers-to-device)
+3. [Pre-defined downlink examples](#downlink-pre-defined-example-messages)
 
-DOWNLINK message format ( Application->LoraServer->Decvice), with [examples](#downlink-example-messages)
+UPLINK messages goes from [Sensor] -> [LoraServer] -> [Application]
+
+DOWNLINK messages goes from [Application]->[LoraServer]->[Device]
 
 _Please note that the uplink and downlink formats differs considerable, due to customer request at different times_
 
@@ -95,7 +100,8 @@ Supported commands are:
 
 _Do not send unsupported Elsys commands. They might work but has not been tested fully and will void your warranty and might brick your device. Examples are AppSKey, NwkSKey and DevAddr. Contact Sensefarm if needed for additional support._
 
-## Downlink example messages
+## Downlink pre-defined example messages
+One hour period message
 ```
 3E061F00000E10FE 
 
@@ -104,8 +110,9 @@ _Do not send unsupported Elsys commands. They might work but has not been tested
 0x1F = Send period
 0x00000E10 = 3600 seconds to sleep
 0xFE = Reboot with new settings.
-
+```
 Other intervals ( with typical use-case ):
+```
 20 seconds ( lab use ), 3E061F00000014FE
 10 minutes ( research agricultural trials ), 3E061F00000258FE
 1 hour interval ( water temperature at baths ), 3E061F00000E10FE 
@@ -113,7 +120,6 @@ Other intervals ( with typical use-case ):
 3 hour interval, 3E061F00002A30FE
 4 hour interval, 3E061F00003840FE
 8 hour interval ( trees ), 3E061F00007080FE
-
 ```
 
 (C) Sensefarm 2020
