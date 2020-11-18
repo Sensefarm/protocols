@@ -3,6 +3,9 @@
 * **Sensefarm-LPP.md** - LoraWAN payload protocol description. Also contains pre-defined downlink messages to set report intervals in the devices.
 * **Sensefarm-LPP-decoder.js** - A node.js program for printing the decoded message in as text.
 * **decode-examples.md** - Some example payloads you might receive from our sensors. For testing your own decoder implementation.
+
+For trials of payload decoding, https://translate.sensefarm.com/ can be used. 
+
 If you need help with these protocols, please contact Sensefarm for a support contract.
 
 # Server configurations for sensors
