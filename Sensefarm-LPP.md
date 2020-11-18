@@ -1,10 +1,12 @@
 Sensefarms CUBE 02 series 
 
+
 # Table of Contents
 1. [Uplink format](#uplink-format-from-device-to-servers)
 2. [Downlink format](#downlink-format-from-servers-to-device)
 3. [Pre-defined downlink examples](#downlink-pre-defined-example-messages)
 
+# Introduction 
 UPLINK messages goes from [Sensor] -> [LoraServer] -> [Application]
 
 DOWNLINK messages goes from [Application]->[LoraServer]->[Device]
@@ -12,8 +14,13 @@ DOWNLINK messages goes from [Application]->[LoraServer]->[Device]
 _Please note that the uplink and downlink formats differs considerable, due to customer request at different times_
 
 # Uplink format from device to servers
-The message format is a proprietary dynamic payload format. It was not originally intended to be published, but due to customer responses we have decided to do so.
-The dynamic format allows us to customize the number of sensors for every specific order, and not all possible sensor combinations is transmitted all the time. Sensor data can suddenly start to be included in the messages, or removed, if a sensor is considered broken by the device itself.
+_The message format is a proprietary dynamic payload format. It was not originally intended to be published, but due to customer responses we have decided to do so. Please send us requests for clarifications as this document evolves based on customer usage_
+
+The CUBE01 and CUBE02 series wakes up from sleep and scans for sensors to read out. Once a sensor is found it is added to the payload, and the scan for sensors continues.  
+
+The dynamic size format allows us to add and remove physical sensors to a device in the field, or mount the specific options before delivery to a customer without modifying the software in the device. 
+
+Sensor data can suddenly stop to be included in the messages if a sensor is not detected. This usually correlates with a battery that needs replacement, or a cable that has been destroyed in some way.
 
 ## Payload
 
