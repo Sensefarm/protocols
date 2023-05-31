@@ -6,21 +6,17 @@ Sensefarms CUBE 02 series
 2. [Downlink format](#downlink-format-from-servers-to-device)
 3. [Pre-defined downlink examples](#downlink-pre-defined-example-messages)
 
-# Introduction 
-UPLINK messages goes from [Sensor] -> [LoraServer] -> [Application]
-
-DOWNLINK messages goes from [Application]->[LoraServer]->[Device]
-
-_Please note that the uplink and downlink formats differs considerable, due to customer request at different times_
-
-# Uplink format from device to servers
+# Uplinks
+## Uplink format from device to servers
 _The message format is a proprietary dynamic payload format. It was not originally intended to be published, but due to customer responses we have decided to do so. Please send us requests for clarifications as this document evolves based on customer usage_
 
 The CUBE01 and CUBE02 series wakes up from sleep and scans for sensors to read out. Once a sensor is found it is added to the payload, and the scan for sensors continues.  
 
 The dynamic size format allows us to add and remove physical sensors to a device in the field, or mount the specific options before delivery to a customer without modifying the software in the device. 
 
-Sensor data can suddenly stop to be included in the messages if a sensor is not detected. This usually correlates with a battery that needs replacement, or a cable that has been destroyed in some way.
+**Sensor data in our node.js example do not save data from multiple similar sensors, it just prints them to the screen. Many programmers have therefore overwritten the previous sensor of the same type when using only a simple variable where an array is needed.
+
+**Sensor data can suddenly stop to be included in the messages if a sensor is not detected. This usually correlates with a battery that needs replacement, or a cable that has been destroyed in some way.
 
 ## Payload
 
@@ -70,7 +66,7 @@ All multi-byte values are Big-endian.
 | 0x17 | Protocol Version   | 2    | Unsigned            | Version 0 -> 65535 |
 | ...  | RFU                |      |                     | Reserved for future use   |
 
-## Example Downlink messages
+## Example Uplink messages
 ```
 Decoder started with 0xb006b800013008e898009c18f599009c18f50841a2501a
 Sensor header byte 0xb0 decoded into type: 0x16 number 0
@@ -89,7 +85,58 @@ Sensor parameter byte 0x00
 [...]
 ```
 
-# Downlink format from servers to device
+# Downlinks
+## Downlink pre-defined example messages
+
+Common intervals ( with typical use-case ):
+```
+20 seconds ( lab use ), 3E061F00000014FE
+10 minutes ( research agricultural trials ), 3E061F00000258FE
+1 hour interval ( water temperature at baths ), 3E061F00000E10FE 
+2 hour interval, 3E061F00001C20FE
+3 hour interval, 3E061F00002A30FE
+4 hour interval, 3E061F00003840FE
+8 hour interval ( trees ), 3E061F00007080FE
+```
+### What is in these messages
+One hour period message
+```
+3E061F00000E10FE 
+
+0x3E = Header byte
+0x06 = 6 bytes will follow
+0x1F = Send period
+0x00000E10 = 3600 seconds to sleep
+0xFE = Reboot with new settings.
+```
+
+## Downlink troubleshooting
+We have noted that common LoraWAN servers (TTN, Actility) are not able to send a downlink message reliably to our devices. Sometimes it works, sometimes it does not. We therefore recommend to always try downlinks several times in your office and make sure it works reliably, or pre-order the devices with the correct settings.
+
+### Frequency / channel selection
+The device sends uplink data on a random frequency/channel every time, but it expects to receive the downlink on the same frequency/channel as it has just sent data.
+TTN-problem - TTN ABP devices downlinks are specified to a specific frequency. It is seldom the same frequency where the device has sent it's data. 
+
+### Receive window delays
+The device uses the pre-defined EU863-870 Default Settings found in https://lora-alliance.org/wp-content/uploads/2020/11/lorawan-regional-parameters-v1.1ra.pdf
+```
+RECEIVE_DELAY1 1 s
+RECEIVE_DELAY2 2 s
+```
+TTN-Problem - The TTN server uses 5 seconds as default so it has time to respond and send the data to the gateway. They currently lack a RECEIVE_DELAY2 setting as well.
+
+## Example
+Note in the image that the uplink and downlink channels/frequencies match, and that there is exactly one second between the reception and scheduled transmission. 
+Other settings are shown for reference. 
+
+This was sent using a GSM connected Mikrotik Ltap Lora-8 gateway, using a https://www.chirpstack.io/ lora-wan server hosted in Sweden (local).
+
+![Succesful downlinks](successful_downlinks_to_cube02.jpg)
+
+
+# Advanced Downlink information
+
+## Downlink format from servers to device
 For the CUBE02 series we adopted parts of the Elsys format ( see https://www.elsys.se/en/wp-content/uploads/sites/3/2016/09/ELSYS_downlink_payload_v2-1.pdf ) and it differs considerable from the downlink protocol. 
 Elsys has an online message generator
 https://www.elsys.se/en/downlink-generator/ ( Be careful of putting in the correct numbers without spaces as it does not check for errors. The reboot command needs a number even though that command does not use parameters. )
@@ -107,26 +154,4 @@ Supported commands are:
 
 _Do not send unsupported Elsys commands. They might work but has not been tested fully and will void your warranty and might brick your device. Examples are AppSKey, NwkSKey and DevAddr. Contact Sensefarm if needed for additional support._
 
-## Downlink pre-defined example messages
-One hour period message
-```
-3E061F00000E10FE 
-
-0x3E = Header byte
-0x06 = 6 bytes will follow
-0x1F = Send period
-0x00000E10 = 3600 seconds to sleep
-0xFE = Reboot with new settings.
-```
-Other intervals ( with typical use-case ):
-```
-20 seconds ( lab use ), 3E061F00000014FE
-10 minutes ( research agricultural trials ), 3E061F00000258FE
-1 hour interval ( water temperature at baths ), 3E061F00000E10FE 
-2 hour interval, 3E061F00001C20FE
-3 hour interval, 3E061F00002A30FE
-4 hour interval, 3E061F00003840FE
-8 hour interval ( trees ), 3E061F00007080FE
-```
-
-(C) Sensefarm 2020
+(C) Sensefarm 2023
