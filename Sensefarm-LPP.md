@@ -90,7 +90,7 @@ Sensor parameter byte 0x00
 
 Common intervals ( with typical use-case ):
 ```
-20 seconds ( lab use ), 3E061F00000014FE
+60 seconds ( lab use ), 3E061F0000003CFE
 10 minutes ( research agricultural trials ), 3E061F00000258FE
 1 hour interval ( water temperature at baths ), 3E061F00000E10FE 
 2 hour interval, 3E061F00001C20FE
@@ -113,9 +113,13 @@ One hour period message
 ## Downlink troubleshooting
 We have noted that common LoraWAN servers (TTN, Actility) are not able to send a downlink message reliably to our devices. Sometimes it works, sometimes it does not. We therefore recommend to always try downlinks several times in your office and make sure it works reliably, or pre-order the devices with the correct settings.
 
+### To short interval
+Some units for lab use have shipped with 20 second intervals. This short interval does not allow the downlink to be processed correctly in the devices. Never set an interval shorter then 60 seconds.
+Too short intervals also affects the lorawan servers internal functions who might not register downlink requests if they receive an uplink message. 
+
 ### Frequency / channel selection
 The device sends uplink data on a random frequency/channel every time, but it expects to receive the downlink on the same frequency/channel as it has just sent data.
-TTN-problem - TTN ABP devices downlinks are specified to a specific frequency. It is seldom the same frequency where the device has sent it's data. 
+Some servers might send downlinks on another frequency/channel. Please check the server device logs.
 
 ### Receive window delays
 The device uses the pre-defined EU863-870 Default Settings found in https://lora-alliance.org/wp-content/uploads/2020/11/lorawan-regional-parameters-v1.1ra.pdf
@@ -123,7 +127,7 @@ The device uses the pre-defined EU863-870 Default Settings found in https://lora
 RECEIVE_DELAY1 1 s
 RECEIVE_DELAY2 2 s
 ```
-TTN-Problem - The TTN server uses 5 seconds as default so it has time to respond and send the data to the gateway. They currently lack a RECEIVE_DELAY2 setting as well.
+TTN-Problem - The TTN server uses 5 seconds as default so it has time to respond and send the data to the gateway. They currently lack a RECEIVE_DELAY2 setting as well. The TTN server does not seem to change the real setting after initial configuration, so the device might need to be deleted and then added again.
 
 ## Example
 Note in the image that the uplink and downlink channels/frequencies match, and that there is exactly one second between the reception and scheduled transmission. 
